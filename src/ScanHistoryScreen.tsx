@@ -20,7 +20,9 @@ interface ScanLog {
   device_id: string;
   scanned_at: string;
   scan_count: number;
-}// Backend URL
+  batch_number: number;
+  product_id: string;
+} // Backend URL
 
 const ScanHistoryScreen = () => {
   const [scanHistory, setScanHistory] = useState<ScanLog[]>([]);
@@ -33,7 +35,8 @@ const ScanHistoryScreen = () => {
 
     if (!storedId) {
       storedId =
-        Device.osInternalBuildId || `device-${Math.random().toString(36).substr(2, 9)}`;
+        Device.osInternalBuildId ||
+        `device-${Math.random().toString(36).substr(2, 9)}`;
       await SecureStore.setItemAsync("device_id", storedId);
     }
 
@@ -48,7 +51,6 @@ const ScanHistoryScreen = () => {
   }, []);
 
   const fetchScanHistory = async (deviceID: string) => {
-    console.log("Fetching scan history for device:::", deviceID);
     setLoading(true);
     try {
       const response = await api.get(`api/products/scan-history/${deviceID}`);
@@ -69,12 +71,29 @@ const ScanHistoryScreen = () => {
 
   const renderItem = ({ item }: { item: ScanLog }) => (
     <View style={styles.historyCard}>
-      <View style={styles.cardContent}>
-        <Text style={styles.qrCode}>🔍 QR Code: {item.qr_code_id}</Text>
-        <Text style={styles.date}>
-          📅 {moment(item.scanned_at).format("YYYY-MM-DD HH:mm")}
-        </Text>
-        <Text style={styles.scanCount}>🔄 Scan Count: {item.scan_count}</Text>
+      <View style={styles.recordRow}>
+        <Text style={styles.recordItemTitle}>📦 Product ID:</Text>
+        <Text style={styles.recordItemText}>{item.product_id}</Text>
+      </View>
+
+      <View style={styles.recordRow}>
+        <Text style={styles.recordItemTitle}>🔢 Batch:</Text>
+        <Text style={styles.recordItemText}>{item.batch_number}</Text>
+      </View>
+
+      <View style={styles.recordRow}>
+        <Text style={styles.recordItemTitle}>🔍 QR Code:</Text>
+        <Text style={styles.recordItemText}>{item.qr_code_id}</Text>
+      </View>
+
+      <View style={styles.recordRow}>
+        <Text style={styles.recordItemTitle}>🔄 Scan Count:</Text>
+        <Text style={styles.recordItemText}>{item.scan_count}</Text>
+      </View>
+
+      <View style={styles.recordRow}>
+        <Text style={styles.recordItemTitle}>📅 Scanned At:</Text>
+        <Text style={styles.recordItemText}>{moment(item.scanned_at).format("YYYY-MM-DD HH:mm")}</Text>
       </View>
     </View>
   );
@@ -144,10 +163,24 @@ const styles = StyleSheet.create({
   cardContent: {
     paddingVertical: 4,
   },
-  qrCode: {
-    fontSize: 16,
-    fontWeight: "bold",
+  recordRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  
+  recordItemTitle: {
+    fontSize: 15,
+    fontWeight: "600",
     color: "#333",
+    flex: 1,
+  },
+  
+  recordItemText: {
+    fontSize: 15,
+    color: "#555",
+    flex: 2,
+    textAlign: "right",
   },
   date: {
     fontSize: 14,

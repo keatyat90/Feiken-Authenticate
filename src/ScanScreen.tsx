@@ -16,7 +16,7 @@ interface ProductData {
   product_id: string;
   qr_code_id: string;
   batch_number: string;
-  verification_status: string;
+  verification_status: number;
 }
 
 export default function ScanScreen() {
@@ -31,7 +31,13 @@ export default function ScanScreen() {
   );
   const [deviceId, setDeviceId] = useState<string>("");
   const [scanCount, setScanCount] = useState<number | null>(null);
-  const scanningRef = useRef(false); 
+  const scanningRef = useRef(false);
+  const statusMap = {
+    1: { text: "✅ Authentic", type: "success" },
+    2: { text: "⚠️ Scan Inconclusive", type: "warning" },
+    3: { text: "❌ Fake", type: "danger" },
+  };
+
   const fetchDeviceId = async () => {
     let storedId = await SecureStore.getItemAsync("device_id");
 
@@ -54,9 +60,9 @@ export default function ScanScreen() {
   }, []);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    if (scanningRef.current || scanned || loading) return; // ✅ Prevent duplicate execution
-    scanningRef.current = true; // ✅ Lock function immediately
-  
+    if (scanningRef.current || scanned || loading) return;
+
+    scanningRef.current = true;
     setScanned(true);
     setLoading(true);
     setStatus("");
@@ -72,30 +78,31 @@ export default function ScanScreen() {
         device_id: deviceId,
       });
 
-      if (response.data.success) {
-        setStatus(response.data.scan_log.scan_count > 5 ? "⚠️ Scan Inconclusive" : "✅ Authentic");
-        setProductData(response.data.product);
-        setScanCount(response.data.scan_log.scan_count || 1);
-        setModalType(
-          response.data.scan_log.scan_count > 5 ? "warning" : "success"
-        );
+      const { success, product, qrCode } = response.data;
+      const statusInfo = statusMap[qrCode.verification_status as 1 | 2 | 3] || {
+        text: "Unknown",
+        type: "info",
+      };
+
+      if (success) {
+        setStatus(statusInfo.text);
+        setModalType(statusInfo.type as "success" | "warning" | "error");
+        setProductData({...product, verification_status: qrCode.verification_status});
+        setScanCount(scanCount);
       } else {
-        // console.warn("⚠️ Scan Response Warning:", response.data);
-        setStatus(response.data.message || "⚠️ Scan Inconclusive");
+        setStatus(response.data.message || "⚠️ Verification failed");
         setModalType("warning");
       }
     } catch (error: any) {
-      setStatus("❌ Network Error: Cannot reach the server.");
+      console.error("❌ Scan error:", error);
+      setStatus("❌ Network Error: Cannot reach server");
       setModalType("error");
-    }  finally {
+    } finally {
       setLoading(false);
-  
-      // ✅ Add delay before unlocking to prevent rapid re-scans
       setTimeout(() => {
         scanningRef.current = false;
-        setScanned(false); // ✅ Unlock scanner
-      }, 3000); // ✅ 3-second delay before allowing another scan
-  
+        setScanned(false);
+      }, 3000);
       setModalVisible(true);
     }
   };
@@ -131,9 +138,6 @@ export default function ScanScreen() {
               </Text>
               <Text style={styles.modalText}>
                 📦 Batch: {productData.batch_number}
-              </Text>
-              <Text style={styles.modalText}>
-                🔍 Status: {productData.verification_status}
               </Text>
               {scanCount !== null && (
                 <Text style={styles.scanCount}>🔄 Scan Count: {scanCount}</Text>
@@ -213,6 +217,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
+    marginVertical: 10,
   },
   modalButtonText: {
     color: "#fff",
