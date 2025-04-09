@@ -4,7 +4,8 @@
     "slug": "Feiken-Authenticate",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./icon.png",
+    "platforms": ["ios", "android"],
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
