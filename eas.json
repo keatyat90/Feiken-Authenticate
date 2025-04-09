@@ -13,7 +13,9 @@
     },
    "production": {
       "ios": {
-        "distribution": "internal"
+        "distribution": "internal",
+        "autoIncrement": true,
+        "buildNumber": "9"
       }
     },
     "testflight": {
