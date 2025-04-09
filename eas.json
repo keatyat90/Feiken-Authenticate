@@ -13,9 +13,7 @@
     },
    "production": {
       "ios": {
-        "workflow": "managed",
-        "distribution": "internal",
-        "autoIncrement": true
+        "distribution": "internal"
       }
     },
     "testflight": {
