@@ -1,9 +1,10 @@
 import axios from "axios"; // ✅ Import from `.env`
-import { default as dotenvConfig } from 'react-native-dotenv';
+import Constants from 'expo-constants';
 
-const API_URL = dotenvConfig.API_URL;
+const apiUrl = Constants.expoConfig?.extra?.API_URL;
+console.log('API:', apiUrl);
 
-const BASE_URL = API_URL
+const BASE_URL = apiUrl
 
 // ✅ Global Axios instance with API prefix
 const api = axios.create({

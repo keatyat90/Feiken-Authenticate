@@ -37,7 +37,8 @@
     "extra": {
       "eas": {
         "projectId": "288ca3ba-fee1-446a-a62c-2c114f6ed3e3"
-      }
+      },
+      "env": "${APP_ENV}"
     }
   }
 }

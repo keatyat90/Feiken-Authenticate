@@ -1,38 +1,40 @@
 {
   "cli": {
-    "version": ">= 16.0.0",
-    "appVersionSource": "remote"
+    "version": ">= 6.0.0"
   },
   "build": {
     "development": {
-       "developmentClient": true,
+      "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "API_URL": "https://feiken-dev-api.weperform.com.my"
+        "APP_ENV": "development"
       }
     },
-    "preview": {
-      "distribution": "internal",
-      "ios": {
-        "buildConfiguration": "Release"
-      },
-      "env": {
-        "API_URL": "https://feiken-dev-api.weperform.com.my"
-      }
-    },
-   "production": {
+    "production": {
       "ios": {
         "distribution": "store",
         "autoIncrement": true
       },
       "env": {
-        "API_URL": "https://feiken-api.weperform.com.my"
+        "APP_ENV": "production"
       }
     },
-    "testflight": {
+    "testflight-dev": {
       "distribution": "internal",
       "ios": {
         "simulator": false
+      },
+      "env": {
+        "APP_ENV": "development"
+      }
+    },
+    "testflight-prod": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "APP_ENV": "production"
       }
     }
   },
