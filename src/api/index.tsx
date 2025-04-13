@@ -1,9 +1,9 @@
 import axios from "axios"; // ✅ Import from `.env`
+import { default as dotenvConfig } from 'react-native-dotenv';
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.API_URL
-    : process.env.PROD_API_URL;
+const API_URL = dotenvConfig.API_URL;
+
+const BASE_URL = API_URL
 
 // ✅ Global Axios instance with API prefix
 const api = axios.create({

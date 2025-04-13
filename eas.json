@@ -8,13 +8,16 @@
        "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "NODE_ENV": "development"
+        "API_URL": "https://feiken-dev-api.weperform.com.my"
       }
     },
     "preview": {
       "distribution": "internal",
       "ios": {
         "buildConfiguration": "Release"
+      },
+      "env": {
+        "API_URL": "https://feiken-dev-api.weperform.com.my"
       }
     },
    "production": {
@@ -23,7 +26,7 @@
         "autoIncrement": true
       },
       "env": {
-        "NODE_ENV": "production"
+        "API_URL": "https://feiken-api.weperform.com.my"
       }
     },
     "testflight": {
