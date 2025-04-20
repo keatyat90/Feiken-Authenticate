@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 6.0.0"
+    "version": ">= 6.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -20,18 +21,20 @@
       }
     },
     "testflight-dev": {
-      "distribution": "internal",
       "ios": {
-        "simulator": false
+        "distribution": "store",
+        "simulator": false,
+        "autoIncrement": true
       },
       "env": {
         "APP_ENV": "development"
       }
     },
     "testflight-prod": {
-      "distribution": "internal",
       "ios": {
-        "simulator": false
+        "distribution": "store",
+        "simulator": false,
+        "autoIncrement": true
       },
       "env": {
         "APP_ENV": "production"
