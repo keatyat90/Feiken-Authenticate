@@ -6,20 +6,20 @@ const getAppConfig = () => {
   const isProd = env === 'production';
 
   const projectId = isProd
-    ? 'PROD_PROJECT_ID' // 🟢 Replace with real one from Expo dashboard
-    : 'DEV_PROJECT_ID'; // 🔵 Replace with real one too
-P
+    ? process.env.PROD_PROJECT_ID || "288ca3ba-fee1-446a-a62c-2c114f6ed3e3"
+    : process.env.DEV_PROJECT_ID  || '1239f45d-5b94-41b5-b03c-21c35384e7be';
+
   return {
     expo: {
       name: isProd ? 'Feiken Authenticate' : 'Feiken Dev',
       slug: isProd ? 'feiken-authenticate' : 'feiken-authenticate-dev',
-      version: '1.0.0',
+      version: '1.0.1',
       orientation: 'portrait',
       icon: './assets/icon.png', // ✅ Make sure this exists
       scheme: 'feiken',
       userInterfaceStyle: 'light',
       splash: {
-        image: './assets/splash.png', // optional
+        image: './assets/splash-icon.png', // optional
         resizeMode: 'contain',
         backgroundColor: '#ffffff'
       },
