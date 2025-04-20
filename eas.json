@@ -22,7 +22,7 @@
     },
     "testflight-dev": {
       "ios": {
-        "distribution": "store",
+        "distribution": "internal",
         "simulator": false,
         "autoIncrement": true
       },
