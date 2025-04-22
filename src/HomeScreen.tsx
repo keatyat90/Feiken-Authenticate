@@ -44,7 +44,7 @@ export default function HomeScreen() {
       <TouchableOpacity
         style={styles.whatsappButton}
         onPress={() => {
-          const phone = "+60169607140";
+          const phone = process.env.WHATSAPP_NUMBER;
           const message = "Hi, I need help verifying my product.";
           const url = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(
             message

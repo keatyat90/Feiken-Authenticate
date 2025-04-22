@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 const getAppConfig = () => {
-  const env = process.env.APP_ENV || 'development';
+  const env = process.env.APP_ENV || 'production';
 
   const isProd = env === 'production';
 
@@ -12,7 +12,7 @@ const getAppConfig = () => {
   return {
     expo: {
       name: isProd ? 'Feiken Authenticate' : 'Feiken Dev',
-      slug: isProd ? 'feiken-authenticate' : 'feiken-authenticate-dev',
+      slug: isProd ? 'Feiken-Authenticate' : 'feiken-authenticate-dev',
       version: '1.0.1',
       orientation: 'portrait',
       icon: './assets/icon.png', // ✅ Make sure this exists
