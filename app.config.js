@@ -42,7 +42,7 @@ const getAppConfig = () => {
         package: isProd
           ? 'com.feiken.authenticate'
           : 'com.feiken.authenticate.dev',
-        versionCode: 1
+        versionCode: 11
       },
       extra: {
         API_URL: isProd
