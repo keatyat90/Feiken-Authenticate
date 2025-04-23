@@ -95,7 +95,7 @@ export default function ScanScreen() {
       }
     } catch (error: any) {
       console.error("❌ Scan error:", error);
-      setStatus("❌ Network Error: Cannot reach server");
+      setStatus("❌ Product not found. Please whatsapp us to verify.");
       setModalType("error");
     } finally {
       setLoading(false);

@@ -34,8 +34,7 @@ export default function HomeScreen() {
       />
       <Text style={styles.title}>Verify with FeikenQR</Text>
       <Text style={styles.subtitle}>
-        Ensure your product is authentic. Scan, upload, or read instructions to
-        verify.
+        Ensure your product is authentic. Scan, or whatsapp to verify.
       </Text>
 
       {/* <TouchableOpacity style={styles.button} onPress={handleNext}>
