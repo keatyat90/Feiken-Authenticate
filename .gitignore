@@ -73,6 +73,7 @@ yarn-error.*
 # local env files
 .env.development
 .env.production
+.env
 
 # typescript
 *.tsbuildinfo

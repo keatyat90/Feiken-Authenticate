@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "APP_ENV": "development"
+        "EXPO_PUBLIC_APP_ENV": "development"
       }
     },
     "production": {
@@ -17,7 +17,7 @@
         "autoIncrement": true
       },
       "env": {
-        "APP_ENV": "production"
+        "EXPO_PUBLIC_APP_ENV": "production"
       }
     },
     "testflight-dev": {
@@ -27,7 +27,7 @@
         "autoIncrement": true
       },
       "env": {
-        "APP_ENV": "development"
+        "EXPO_PUBLIC_APP_ENV": "development"
       }
     },
     "testflight-prod": {
@@ -37,7 +37,7 @@
         "autoIncrement": true
       },
       "env": {
-        "APP_ENV": "production"
+        "EXPO_PUBLIC_APP_ENV": "production"
       }
     }
   },

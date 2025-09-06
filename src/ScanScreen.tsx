@@ -87,8 +87,13 @@ export default function ScanScreen() {
       if (success) {
         setStatus(statusInfo.text);
         setModalType(statusInfo.type as "success" | "warning" | "error");
-        setProductData({...product, verification_status: qrCode.verification_status});
-        setScanCount(scanCount);
+        setProductData({
+          ...product,
+          verification_status: qrCode.verification_status,
+        });
+        if (qrCode?.scan_count !== undefined) {
+          setScanCount(qrCode.scan_count);
+        }
       } else {
         setStatus(response.data.message || "⚠️ Verification failed");
         setModalType("warning");

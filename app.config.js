@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 const getAppConfig = () => {
-  const env = process.env.APP_ENV || 'production';
+  const env = process.env.EXPO_PUBLIC_APP_ENV || 'production';
 
   const isProd = env === 'production';
 
@@ -50,7 +50,7 @@ const getAppConfig = () => {
         versionCode: 1
       },
       extra: {
-        API_URL: isProd
+        EXPO_PUBLIC_API_URL: isProd
           ? 'https://feiken-api.weperform.com.my'
           : 'https://feiken-dev-api.weperform.com.my',
         eas: {
