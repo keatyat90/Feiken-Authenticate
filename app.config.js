@@ -32,17 +32,22 @@ const getAppConfig = () => {
         bundleIdentifier: isProd
           ? 'com.feiken.authenticate'
           : 'com.feiken.authenticate.dev',
-        buildNumber: '1.0.0'
+        buildNumber: '1.0.0',
+        infoPlist: {
+        NSCameraUsageDescription: "We use your camera to scan QR codes printed on Feiken products to verify their authenticity. No images or video are recorded or stored."
+      }
       },
       android: {
+        permissions: ["CAMERA"],
+        cameraPermission: "We use your camera to scan QR codes printed on Feiken products to verify their authenticity. No images or video are recorded or stored.",
         adaptiveIcon: {
           foregroundImage: './icon.png',
           backgroundColor: '#FFFFFF'
         },
         package: isProd
-          ? 'com.feiken.authenticate'
+          ? 'com.feiken.authenticate.android'
           : 'com.feiken.authenticate.dev',
-        versionCode: 11
+        versionCode: 1
       },
       extra: {
         API_URL: isProd

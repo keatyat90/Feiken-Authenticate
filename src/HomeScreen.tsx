@@ -14,16 +14,19 @@ import { FontAwesome } from "@expo/vector-icons";
 // Define types for navigation props
 type RootStackParamList = {
   Home: undefined;
-  ContactForm: undefined;
+  ScanScreen: undefined;
 };
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  // Navigate to ContactForm without passing images
-  const handleNext = () => {
-    navigation.navigate("ContactForm");
+  const openSampleQR = () => {
+    Linking.openURL(process.env.SAMPLE_QR_LINK);
+  };
+
+  const startScanner = () => {
+    navigation.navigate('ScanScreen'); // Replace with your actual scanner screen name
   };
 
   return (
@@ -32,14 +35,18 @@ export default function HomeScreen() {
         source={require("../assets/feiken-logo.png")}
         style={styles.image}
       />
-      <Text style={styles.title}>Verify with FeikenQR</Text>
+      <Text style={styles.title}>FEIKEN Authenticate</Text>
       <Text style={styles.subtitle}>
-        Ensure your product is authentic. Scan, or whatsapp to verify.
+        Scan QR codes on Feiken products to verify authenticity and track
+        details.
       </Text>
+      <TouchableOpacity style={styles.button} onPress={startScanner}>
+        <Text style={styles.buttonText}>📷 Start Scanning</Text>
+      </TouchableOpacity>
 
-      {/* <TouchableOpacity style={styles.button} onPress={handleNext}>
-        <Text style={styles.buttonText}>UPLOAD PHOTOS</Text>
-      </TouchableOpacity> */}
+      <TouchableOpacity style={[styles.button, styles.outlined]} onPress={openSampleQR}>
+        <Text style={styles.buttonText}>📄 View Sample QR Code</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.whatsappButton}
         onPress={() => {
@@ -101,18 +108,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  outlined: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#007AFF',
+  },
   whatsappButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     right: 20,
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#25D366',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#25D366",
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 6,
     zIndex: 10,
   },
-  
 });
