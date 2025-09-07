@@ -11,6 +11,7 @@ const getAppConfig = () => {
 
   return {
     expo: {
+      newArchEnabled: false,
       name: isProd ? 'Feiken Authenticate' : 'Feiken Dev',
       slug: isProd ? 'Feiken-Authenticate' : 'feiken-authenticate-dev',
       version: '1.0.1',

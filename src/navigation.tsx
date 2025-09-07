@@ -9,7 +9,6 @@ import ScanScreen from "./ScanScreen";
 import ContactForm from "./ContactForm";
 import ScanHistoryScreen from "./ScanHistoryScreen";
 import Help from "./HelpScreen";
-import About from "./AboutScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,25 +33,36 @@ function MainTabs() {
           ),
         }}
       />
+
       <Tab.Screen
         name="Scan"
         component={ScanScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="barcode-scan"
-              size={24}
-              color={color}
-            />
+            <MaterialCommunityIcons name="barcode-scan" size={24} color={color} />
           ),
         }}
       />
+
       <Tab.Screen
         name="Scan History"
         component={ScanHistoryScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="history" size={24} color={color} />
+          ),
+        }}
+      />
+
+      {/* NEW: Help as a tab */}
+      <Tab.Screen
+        name="Help"
+        component={Help}
+        options={{
+          title: "Help & FAQ",
+          tabBarLabel: "Help & FAQ",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="help-circle" size={24} color={color} />
           ),
         }}
       />
@@ -64,10 +74,12 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* Tabs (Home, Scan, History, Help) */}
         <Stack.Screen name="MainTabs" component={MainTabs} />
+
+        {/* Keep ContactForm in stack for modal-like navigation */}
         <Stack.Screen name="ContactForm" component={ContactForm} />
-        <Stack.Screen name="Help" component={Help} />
-        <Stack.Screen name="About" component={About} />
+        {/* Removed: separate Help stack screen to avoid duplicate routes */}
       </Stack.Navigator>
     </NavigationContainer>
   );
