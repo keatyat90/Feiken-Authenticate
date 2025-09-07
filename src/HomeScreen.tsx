@@ -12,6 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
+import Constants from "expo-constants";
 
 type RootStackParamList = {
   Home: undefined;
@@ -59,7 +60,13 @@ export default function HomeScreen() {
 
       {/* Footer version info */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>📱 Version: 1.0.0</Text>
+        <Text style={styles.footerText}>
+          📱 Version: {Constants.expoConfig?.version}
+        </Text>
+        <Text style={styles.footerText}>
+          Build: iOS {Constants.expoConfig?.ios?.buildNumber} | Android{" "}
+          {Constants.expoConfig?.android?.versionCode}
+        </Text>
         <Text style={styles.footerText}>
           © {new Date().getFullYear()} Feiken. All rights reserved.
         </Text>
