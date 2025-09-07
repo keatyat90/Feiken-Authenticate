@@ -31,7 +31,7 @@ const getAppConfig = () => {
         bundleIdentifier: isProd
           ? 'com.feiken.authenticate'
           : 'com.feiken.authenticate.dev',
-        buildNumber: '2', // increment on every iOS submit
+        buildNumber: '7', // increment on every iOS submit
         infoPlist: {
           NSCameraUsageDescription:
             'We use your camera to scan QR codes printed on Feiken products to verify authenticity. No images or video are recorded or stored.',
@@ -41,7 +41,7 @@ const getAppConfig = () => {
         package: isProd
           ? 'com.feiken.authenticate'
           : 'com.feiken.authenticate.dev',
-        versionCode: 2, // increment on every Android submit
+        versionCode: 7, // increment on every Android submit
         permissions: ['CAMERA'],
         cameraPermission:
           'We use your camera to scan QR codes printed on Feiken products to verify authenticity. No images or video are recorded or stored.',
