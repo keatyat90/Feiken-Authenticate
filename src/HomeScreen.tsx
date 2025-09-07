@@ -64,10 +64,6 @@ export default function HomeScreen() {
           📱 Version: {Constants.expoConfig?.version}
         </Text>
         <Text style={styles.footerText}>
-          Build: iOS {Constants.expoConfig?.ios?.buildNumber} | Android{" "}
-          {Constants.expoConfig?.android?.versionCode}
-        </Text>
-        <Text style={styles.footerText}>
           © {new Date().getFullYear()} Feiken. All rights reserved.
         </Text>
       </View>
