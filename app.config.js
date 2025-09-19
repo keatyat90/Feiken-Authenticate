@@ -49,6 +49,9 @@ const getAppConfig = () => {
           foregroundImage: './assets/adaptive-icon.png',
           backgroundColor: '#FFFFFF',
         },
+        compileSdkVersion: 35,
+        targetSdkVersion: 35,
+        minSdkVersion: 23 
       },
       extra: {
         EXPO_PUBLIC_APP_ENV: env,
