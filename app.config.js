@@ -41,7 +41,7 @@ const getAppConfig = () => {
         package: isProd
           ? 'com.feiken.authenticate'
           : 'com.feiken.authenticate.dev',
-        versionCode: 11, // increment on every Android submit
+        versionCode: 12, // increment on every Android submit
         permissions: ['CAMERA'],
         cameraPermission:
           'We use your camera to scan QR codes printed on Feiken products to verify authenticity. No images or video are recorded or stored.',
