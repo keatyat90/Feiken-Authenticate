@@ -16,6 +16,9 @@
         "distribution": "store",
         "autoIncrement": true
       },
+      "android": {
+        "autoIncrement": "versionCode"
+      },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "production"
       }
@@ -25,6 +28,9 @@
         "distribution": "store",
         "simulator": false,
         "autoIncrement": true
+      },
+      "android": {
+        "autoIncrement": "versionCode"
       },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development"
@@ -36,6 +42,9 @@
         "simulator": false,
         "autoIncrement": true
       },
+      "android": {
+        "autoIncrement": "versionCode"
+      },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "production"
       }
@@ -45,6 +54,9 @@
     "production": {
       "ios": {
         "appleId": "keatyat_010706@hotmail.com"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./credentials.json"
       }
     }
   }
