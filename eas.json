@@ -9,6 +9,9 @@
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development"
+      },
+      "android": {
+        "image": "sdk-54"
       }
     },
     "production": {
@@ -17,7 +20,9 @@
         "autoIncrement": true
       },
       "android": {
-        "autoIncrement": "versionCode"
+        "autoIncrement": "versionCode",
+        "buildType": "app-bundle",
+        "image": "sdk-54"
       },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "production"
@@ -30,7 +35,9 @@
         "autoIncrement": true
       },
       "android": {
-        "autoIncrement": "versionCode"
+        "gradleCommand": ":app:assembleRelease",
+        "buildType": "apk",
+        "image": "sdk-54"
       },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development"
@@ -43,7 +50,9 @@
         "autoIncrement": true
       },
       "android": {
-        "autoIncrement": "versionCode"
+        "gradleCommand": ":app:assembleRelease",
+        "buildType": "apk",
+        "image": "sdk-54"
       },
       "env": {
         "EXPO_PUBLIC_APP_ENV": "production"

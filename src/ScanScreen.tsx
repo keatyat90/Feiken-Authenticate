@@ -6,10 +6,13 @@ import {
   ActivityIndicator,
   StyleSheet,
   Modal,
+  Platform,
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import * as Device from "expo-device";
 import * as SecureStore from "expo-secure-store";
+import QrScanner from "@yudiel/react-qr-scanner";
+
 import api from "./api";
 
 interface ProductData {
@@ -32,33 +35,50 @@ export default function ScanScreen() {
   const [deviceId, setDeviceId] = useState<string>("");
   const [scanCount, setScanCount] = useState<number | null>(null);
   const scanningRef = useRef(false);
+
   const statusMap = {
     1: { text: "✅ Authentic", type: "success" },
     2: { text: "⚠️ Scan Inconclusive", type: "warning" },
-    3: { text: "❌ Fake", type: "danger" },
+    3: { text: "❌ Fake", type: "error" },
   };
 
+  // 🔹 Device ID (native SecureStore only)
   const fetchDeviceId = async () => {
-    let storedId = await SecureStore.getItemAsync("device_id");
+    if (Platform.OS === "web") {
+      // Browser localStorage fallback
+      let storedId = localStorage.getItem("device_id");
+      if (!storedId) {
+        storedId = `device-${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem("device_id", storedId);
+      }
+      setDeviceId(storedId);
+      return;
+    }
 
+    let storedId = await SecureStore.getItemAsync("device_id");
     if (!storedId) {
       storedId =
         Device.osInternalBuildId ||
         `device-${Math.random().toString(36).substr(2, 9)}`;
       await SecureStore.setItemAsync("device_id", storedId);
     }
-
     setDeviceId(storedId);
   };
 
+  // 🔹 Request camera permission (native only)
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
+      if (Platform.OS !== "web") {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === "granted");
+      } else {
+        setHasPermission(true); // browsers will prompt automatically
+      }
       fetchDeviceId();
     })();
   }, []);
 
+  // 🔹 Unified scanner handler
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     if (scanningRef.current || scanned || loading) return;
 
@@ -69,10 +89,7 @@ export default function ScanScreen() {
     setProductData(null);
 
     try {
-      if (!deviceId) {
-        console.warn("📱 Device ID not set. Fetching...");
-        await fetchDeviceId();
-      }
+      if (!deviceId) await fetchDeviceId();
 
       const response = await api.put(`/api/products/verify/${data}`, {
         device_id: deviceId,
@@ -81,7 +98,7 @@ export default function ScanScreen() {
       const { success, product, qrCode } = response.data;
       const statusInfo = statusMap[qrCode.verification_status as 1 | 2 | 3] || {
         text: "Unknown",
-        type: "info",
+        type: "warning",
       };
 
       if (success) {
@@ -91,16 +108,14 @@ export default function ScanScreen() {
           ...product,
           verification_status: qrCode.verification_status,
         });
-        if (qrCode?.scan_count !== undefined) {
-          setScanCount(qrCode.scan_count);
-        }
+        if (qrCode?.scan_count !== undefined) setScanCount(qrCode.scan_count);
       } else {
         setStatus(response.data.message || "⚠️ Verification failed");
         setModalType("warning");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("❌ Scan error:", error);
-      setStatus("❌ Product not found. Please whatsapp us to verify.");
+      setStatus("❌ Product not found. Please WhatsApp us to verify.");
       setModalType("error");
     } finally {
       setLoading(false);
@@ -112,28 +127,43 @@ export default function ScanScreen() {
     }
   };
 
-  if (hasPermission === null) {
+  if (Platform.OS !== "web" && hasPermission === null) {
     return (
       <Text style={styles.permissionText}>Requesting camera permission...</Text>
     );
   }
 
-  if (hasPermission === false) {
+  if (Platform.OS !== "web" && hasPermission === false) {
     return <Text style={styles.permissionText}>No access to camera</Text>;
   }
 
   return (
     <View style={styles.container}>
-      {!scanned && !loading ? (
+      {/* 🔹 Platform switch */}
+      {Platform.OS === "web" ? (
+        <View style={styles.webScanner}>
+          <QrScanner
+            onResult={(result) => {
+              if (!result) return; // null safety
+              const data =
+                typeof result === "string" ? result : result.text ?? "";
+              if (data) handleBarCodeScanned({ data });
+            }}
+            onError={(error) => console.error("Scanner error:", error)}
+            constraints={{ facingMode: "environment" }}
+          />
+        </View>
+      ) : !scanned && !loading ? (
         <CameraView
           style={styles.camera}
-          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned} // Ensures the camera resets
+          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         />
       ) : loading ? (
         <ActivityIndicator size="large" color="#ff9800" />
       ) : null}
 
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      {/* Modal */}
+      <Modal animationType="slide" transparent visible={modalVisible}>
         <View style={[styles.modalContainer, styles[modalType]]}>
           <Text style={styles.modalTitle}>{status}</Text>
           {productData && (
@@ -159,12 +189,8 @@ export default function ScanScreen() {
             >
               <Text style={styles.modalButtonText}>SCAN MORE</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
-              onPress={() => {
-                setScanned(false);
-                setModalVisible(false);
-              }}
+              onPress={() => setModalVisible(false)}
               style={styles.modalButton}
             >
               <Text style={styles.modalButtonText}>CLOSE</Text>
@@ -184,6 +210,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   camera: {
+    width: "90%",
+    height: 400,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  webScanner: {
     width: "90%",
     height: 400,
     borderRadius: 20,
