@@ -60,29 +60,6 @@ const getAppConfig = () => {
           : 'https://feiken-dev-api.weperform.com.my',
         eas: { projectId },
       },
-    plugins: [
-  [
-    "expo-build-properties",
-    {
-      android: {
-        kotlinVersion: "1.9.25",
-        gradlePluginVersion: "8.5.2",
-        gradleVersion: "8.6",
-        compileSdkVersion: 35,
-        targetSdkVersion: 35,
-        minSdkVersion: 24
-      }
-    }
-  ]
-],
-web: {
-  bundler: "metro",
-  output: "single",
-  favicon: "./assets/favicon.png",
-  themeColor: "#ffffff",
-  backgroundColor: "#ffffff"
-}
-
     },
   };
 };
